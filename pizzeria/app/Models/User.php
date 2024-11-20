@@ -2,31 +2,30 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
+     * Los atributos que son asignables masivamente.
      *
-     * @var array<int, string>
+     * @var array
      */
     protected $fillable = [
         'name',
         'email',
         'password',
+        'role',  // Role agregado si se maneja un sistema de roles
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * Los atributos que deben ser ocultados para los arreglos.
      *
-     * @var array<int, string>
+     * @var array
      */
     protected $hidden = [
         'password',
@@ -34,15 +33,29 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * Los atributos que deben ser convertidos a tipos de datos nativos.
      *
-     * @return array<string, string>
+     * @var array
      */
-    protected function casts(): array
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+
+    /**
+     * Relación con el modelo Client.
+     * Un usuario puede tener un cliente asociado (si es de tipo cliente).
+     */
+    public function client()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->hasOne(Client::class);
+    }
+
+    /**
+     * Relación con el modelo Employee.
+     * Un usuario puede tener un empleado asociado (si es de tipo empleado).
+     */
+    public function employee()
+    {
+        return $this->hasOne(Employee::class);
     }
 }
