@@ -12,10 +12,182 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <!-- Opción de Dashboard (visible para Admin y Cliente) -->
+                    @if(Auth::user()->role === 'admin' || Auth::user()->role === 'cajero')
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                        {{ __('Panel') }}
                     </x-nav-link>
+                    @endif
                 </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <!-- Opción de Sucursales (visible para Admin) -->
+                    @if(Auth::user()->role === 'admin' || Auth::user()->role === 'mensajero' || Auth::user()->role === 'cliente')
+                    <x-nav-link :href="route('branches.index')" :active="request()->routeIs('branches.index')">
+                        {{ __('Sucursales') }}
+                    </x-nav-link>
+                    @endif
+                </div>
+
+                <div class="hidden sm:flex sm:items-center sm:ms-6">
+                    @if(Auth::user()->role === 'admin')
+                    <x-dropdown align="right" width="48">
+
+                        <x-slot name="trigger">
+                            <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                                <div>{{ __('Usuarios') }}</div>
+
+                                <div class="ms-1">
+                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+
+                            </button>
+                        </x-slot>
+                        @endif
+                        <x-slot name="content">
+                            <x-dropdown-link :href="route('users.index')">
+                                {{ __('Usuarios') }}
+                            </x-dropdown-link>
+
+                            <x-dropdown-link :href="route('clients.index')">
+                                {{ __('Clientes') }}
+                            </x-dropdown-link>
+
+                            <x-dropdown-link :href="route('employees.index')">
+                                {{ __('Empleados') }}
+                            </x-dropdown-link>
+
+                        </x-slot>
+                    </x-dropdown>
+                </div>
+
+                <div class="hidden sm:flex sm:items-center sm:ms-6">
+                    @if(Auth::user()->role === 'admin')
+                    <x-dropdown align="right" width="48">
+
+                        <x-slot name="trigger">
+                            <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                                <div>{{ __('Inventario y Proveedores') }}</div>
+
+                                <div class="ms-1">
+                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+
+                            </button>
+                        </x-slot>
+                        @endif
+                        <x-slot name="content">
+
+                            <x-dropdown-link :href="route('suppliers.index')">
+                                {{ __('Proovedores') }}
+                            </x-dropdown-link>
+
+                            <x-dropdown-link :href="route('raw_materials.index')">
+                                {{ __('Materiales') }}
+                            </x-dropdown-link>
+
+                            <x-dropdown-link :href="route('purchases.index')">
+                                {{ __('Compras') }}
+                            </x-dropdown-link>
+
+                            <x-dropdown-link :href="route('pizza_raw_materials.index')">
+                                {{ __('Materiales Pizza') }}
+                            </x-dropdown-link>
+
+                        </x-slot>
+                    </x-dropdown>
+                </div>
+
+                <div class="hidden sm:flex sm:items-center sm:ms-6">
+                    @if(Auth::user()->role === 'admin' || Auth::user()->role === 'cajero' || Auth::user()->role === 'cocinero' || Auth::user()->role === 'cliente')
+                    <x-dropdown align="right" width="48">
+
+                        <x-slot name="trigger">
+                            <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                                <div>{{ __('Pizzeria') }}</div>
+
+                                <div class="ms-1">
+                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+
+                            </button>
+                        </x-slot>
+                        @endif
+                        <x-slot name="content">
+
+                            <x-dropdown-link :href="route('pizzas.index')">
+                                {{ __('Pizzas') }}
+                            </x-dropdown-link>
+
+                            <x-dropdown-link :href="route('ingredients.index')">
+                                {{ __('Ingredientes') }}
+                            </x-dropdown-link>
+
+                            <x-dropdown-link :href="route('pizza_sizes.index')">
+                                {{ __('Tamaño Pizza') }}
+                            </x-dropdown-link>
+
+                            <x-dropdown-link :href="route('pizza_ingredients.index')">
+                                {{ __('Pizza e Ingredientes') }}
+                            </x-dropdown-link>
+
+                            <x-dropdown-link :href="route('extraingredient.index')">
+                                {{ __('Ingredientes Extra') }}
+                            </x-dropdown-link>
+
+
+                        </x-slot>
+
+
+
+                    </x-dropdown>
+                </div>
+
+
+                <div class="hidden sm:flex sm:items-center sm:ms-6">
+                    @if(Auth::user()->role === 'admin' || Auth::user()->role === 'cajero' || Auth::user()->role === 'cocinero' || Auth::user()->role === 'mensajero')
+                    <x-dropdown align="right" width="48">
+
+                        <x-slot name="trigger">
+                            <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                                <div>{{ __('Ordenes') }}</div>
+
+                                <div class="ms-1">
+                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+
+                            </button>
+                        </x-slot>
+                        @endif
+                        <x-slot name="content">
+                            @if(Auth::user()->role === 'admin' || Auth::user()->role === 'cajero' || Auth::user()->role === 'cocinero' || Auth::user()->role === 'mensajero')
+                            <x-dropdown-link :href="route('orders.index')">
+                                {{ __('Ordenes') }}
+                            </x-dropdown-link>
+                            @endif
+                            @if(Auth::user()->role === 'admin' || Auth::user()->role === 'cajero' || Auth::user()->role === 'cocinero')
+                            <x-dropdown-link :href="route('order_pizzas.index')">
+                                {{ __('Ordenes de pizza') }}
+                            </x-dropdown-link>
+                            @if(Auth::user()->role === 'admin' || Auth::user()->role === 'cajero' || Auth::user()->role === 'cocinero')
+                            @endif
+                            <x-dropdown-link :href="route('order_extra_ingredients.index')">
+                                {{ __('Ordenes de ingredientes Extra') }}
+                            </x-dropdown-link>
+                            @endif
+                        </x-slot>
+
+                    </x-dropdown>
+                </div>
+
             </div>
 
             <!-- Settings Dropdown -->
@@ -35,7 +207,7 @@
 
                     <x-slot name="content">
                         <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
+                            {{ __('Perfil') }}
                         </x-dropdown-link>
 
                         <!-- Authentication -->
@@ -43,9 +215,9 @@
                             @csrf
 
                             <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault();
+                                onclick="event.preventDefault();
                                                 this.closest('form').submit();">
-                                {{ __('Log Out') }}
+                                {{ __('Cerrar sesion') }}
                             </x-dropdown-link>
                         </form>
                     </x-slot>
@@ -68,7 +240,7 @@
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+                {{ __('Panel') }}
             </x-responsive-nav-link>
         </div>
 
@@ -81,7 +253,7 @@
 
             <div class="mt-3 space-y-1">
                 <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
+                    {{ __('Perfil') }}
                 </x-responsive-nav-link>
 
                 <!-- Authentication -->
@@ -89,9 +261,9 @@
                     @csrf
 
                     <x-responsive-nav-link :href="route('logout')"
-                            onclick="event.preventDefault();
+                        onclick="event.preventDefault();
                                         this.closest('form').submit();">
-                        {{ __('Log Out') }}
+                        {{ __('Cerrar sesion') }}
                     </x-responsive-nav-link>
                 </form>
             </div>
